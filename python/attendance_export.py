@@ -6,10 +6,16 @@ from openpyxl.styles import Font
 conn = mysql.connector.connect(
     host = "localhost",
     user = "root",
-    password = "1234",
+    password = "root",
     database = "attendance_db"
 )
 cursor = conn.cursor()
+
+
+cursor.execute("SELECT * FROM employees")
+rows = cursor.fetchall()
+for row in rows:
+    print(row)
 
 
 
@@ -30,8 +36,7 @@ shift_sheet = wb.create_sheet("Employee Shifts")
 
 
 
-
-# Employees Sheet
+# Employees sheet
 
 employees_query = """
 SELECT
@@ -50,8 +55,8 @@ cursor.execute(employees_query)
 employees_data = cursor.fetchall()
 
 
-employees_headers = [
-    "Employee ID",
+employees_headers = [   
+    "Employee ID"                          
     "Employee Name",
     "Gender",
     "Department",
@@ -103,13 +108,10 @@ attendance_sheet.append(attendance_headers)
 for row in attendance_data:
     attendance_sheet.append(row)
 
-# Bold Headers
+# bold headers 
 for cell in attendance_sheet[1]:
     cell.font = Font(bold=True)
-
-
-
-
+                    
 
 
 # leave requests Sheet
@@ -216,4 +218,3 @@ for sheet in wb.worksheets:
 wb.save("../excel_reports/attendance_report.xlsx")
 
 print("Excel report created successfully!")
-
